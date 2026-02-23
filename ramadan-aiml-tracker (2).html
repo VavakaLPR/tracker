@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Рамадан · AI/ML · Трекер</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0c0e0d;
+  --s1:#131615;
+  --s2:#191c1a;
+  --s3:#1f2320;
+  --border:#252a27;
+  --border2:#2e3530;
+  --gold:#c8a45a;
+  --gold2:#e2c882;
+  --gold3:#f0dca0;
+  --green:#3a7a4e;
+  --green2:#4d9e65;
+  --green3:#6bbf82;
+  --blue:#3a5f8a;
+  --blue2:#5a8abf;
+  --blue3:#82b0e0;
+  --red:#8a3a3a;
+  --orange:#8a5a2a;
+  --text:#ddd8ce;
+  --text2:#a8a49c;
+  --muted:#5a5e5b;
+  --radius:14px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Geologica',sans-serif;
+  font-weight:300;
+  min-height:100vh;
+}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero{
+  text-align:center;
+  padding:64px 24px 48px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  top:-60px;left:50%;
+  transform:translateX(-50%);
+  width:500px;height:500px;
+  background:radial-gradient(ellipse,rgba(200,164,90,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.hero-arabic{
+  font-family:'Amiri',serif;
+  font-size:24px;
+  color:var(--gold);
+  opacity:.6;
+  letter-spacing:3px;
+  margin-bottom:16px;
+}
+
+.hero h1{
+  font-family:'Amiri',serif;
+  font-size:48px;
+  font-weight:700;
+  line-height:1.1;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold3) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:10px;
+}
+
+.hero-sub{
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:32px;
+}
+
+.hero-divider{
+  margin:0 auto;
+  width:120px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+/* ══════════════════════════════════════
+   NAV TABS
+══════════════════════════════════════ */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  padding:0 24px 32px;
+  flex-wrap:wrap;
+}
+
+.tab-btn{
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:100px;
+  padding:10px 22px;
+  font-family:'Geologica',sans-serif;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:1px;
+  color:var(--text2);
+  cursor:pointer;
+  transition:all .2s;
+  text-transform:uppercase;
+}
+
+.tab-btn:hover{border-color:var(--gold);color:var(--gold)}
+.tab-btn.active{
+  background:linear-gradient(135deg,rgba(200,164,90,.15),rgba(200,164,90,.05));
+  border-color:var(--gold);
+  color:var(--gold2);
+}
+
+/* ══════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════ */
+.section{display:none;padding:0 20px 80px;max-width:1200px;margin:0 auto}
+.section.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════
+   OVERVIEW STATS
+══════════════════════════════════════ */
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+  margin-bottom:32px;
+}
+
+.stat-card{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 16px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.stat-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:var(--accent,var(--gold));
+  opacity:.4;
+}
+
+.stat-num{
+  font-family:'Amiri',serif;
+  font-size:36px;
+  line-height:1;
+  color:var(--accent,var(--gold2));
+  margin-bottom:4px;
+}
+
+.stat-lbl{
+  font-size:10px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+}
+
+/* ══════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════ */
+.sec-head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.sec-head h2{
+  font-family:'Amiri',serif;
+  font-size:24px;
+  font-weight:400;
+  color:var(--gold2);
+  white-space:nowrap;
+}
+
+.sec-line{
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+/* ══════════════════════════════════════
+   HABIT GRID (30-day)
+══════════════════════════════════════ */
+.habit-grid-wrap{
+  overflow-x:auto;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:var(--s1);
+  margin-bottom:24px;
+}
+
+table.habit-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+table.habit-table th,
+table.habit-table td{
+  border:1px solid var(--border);
+  text-align:center;
+  font-size:11px;
+  padding:0;
+}
+
+.col-n{width:32px;min-width:32px}
+.col-name{width:170px;min-width:150px}
+.col-d{width:26px;min-width:24px}
+.col-tot{width:50px;min-width:46px}
+.col-pct{width:50px;min-width:46px}
+
+.th-week{
+  background:var(--s3);
+  color:var(--gold);
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:7px 4px;
+  font-weight:500;
+}
+
+.th-daynum{
+  background:var(--s2);
+  color:var(--muted);
+  font-size:9px;
+  padding:5px 2px;
+  font-weight:400;
+}
+
+.th-daynum.is-today{
+  color:var(--green3);
+  font-weight:700;
+  background:rgba(77,158,101,.1);
+}
+
+.th-daynum.is-friday{color:var(--gold);opacity:.8}
+
+.td-n{
+  background:var(--s2);
+  color:var(--muted);
+  font-size:10px;
+  min-height:32px;
+}
+
+.td-name{
+  background:var(--s1);
+  text-align:left;
+  padding:0 10px;
+  font-size:12px;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  height:32px;
+}
+
+.td-name .em{margin-right:6px}
+
+.td-check{
+  height:32px;
+  cursor:pointer;
+  transition:background .1s;
+  position:relative;
+}
+
+.td-check:hover{background:rgba(255,255,255,.03)}
+.td-check.future{cursor:default;opacity:.3}
+
+.td-check.done{background:var(--row-done,rgba(58,122,78,.2))}
+
+.td-check .ck{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.td-check.done .ck::after{
+  content:'✓';
+  font-size:12px;
+  font-weight:700;
+  color:var(--row-color,var(--green3));
+}
+
+.td-check.is-today{
+  border-left:1.5px solid rgba(107,191,130,.4)!important;
+  border-right:1.5px solid rgba(107,191,130,.4)!important;
+}
+
+.td-tot{
+  background:var(--s2);
+  color:var(--gold2);
+  font-size:12px;
+  font-weight:500;
+  height:32px;
+  vertical-align:middle;
+}
+
+.td-pct{
+  background:var(--s2);
+  font-size:11px;
+  font-weight:500;
+  height:32px;
+  vertical-align:middle;
+}
+
+.tr-foot td{
+  background:var(--s3);
+  color:var(--text2);
+  padding:5px 4px;
+  font-size:10px;
+  height:28px;
+  vertical-align:middle;
+}
+
+.tr-foot .foot-lbl{
+  text-align:left;
+  padding-left:8px;
+  color:var(--gold);
+  font-size:9px;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════
+   PROGRESS BAR
+══════════════════════════════════════ */
+.progress-wrap{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  margin-bottom:24px;
+}
+
+.prog-label{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+  font-size:12px;
+  color:var(--text2);
+}
+
+.prog-label span{color:var(--gold2);font-weight:500;font-size:14px}
+
+.prog-bar{
+  width:100%;height:6px;
+  background:var(--border2);
+  border-radius:3px;
+  overflow:hidden;
+}
+
+.prog-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--green) 0%,var(--green3) 50%,var(--gold) 100%);
+  border-radius:3px;
+  transition:width .6s ease;
+}
+
+/* ══════════════════════════════════════
+   AI/ML PLAN DAYS
+══════════════════════════════════════ */
+.week-block{margin-bottom:36px}
+
+.week-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:16px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--blue3);
+}
+
+.week-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border2),transparent);
+}
+
+.days-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:10px;
+}
+
+.day-card{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px 16px;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+  position:relative;
+  overflow:hidden;
+}
+
+.day-card::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:var(--blue2);
+  opacity:.4;
+  transition:opacity .2s;
+}
+
+.day-card.done-card{
+  background:rgba(58,95,138,.08);
+  border-color:rgba(90,138,191,.3);
+}
+
+.day-card.done-card::before{opacity:1}
+
+.day-card:hover{border-color:var(--blue2)}
+
+.day-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.day-num{
+  font-size:10px;
+  color:var(--muted);
+  font-weight:500;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.day-done-badge{
+  font-size:9px;
+  background:rgba(90,138,191,.2);
+  color:var(--blue3);
+  border:1px solid rgba(90,138,191,.3);
+  border-radius:100px;
+  padding:2px 8px;
+  letter-spacing:.5px;
+}
+
+.day-topic{
+  font-size:13px;
+  font-weight:500;
+  color:var(--text);
+  margin-bottom:10px;
+}
+
+.task-list-ml{list-style:none}
+
+.task-ml{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  padding:5px 0;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+
+.task-ml:last-child{border-bottom:none}
+
+.task-ml-cb{
+  width:14px;height:14px;
+  border:1.5px solid var(--border2);
+  border-radius:3px;
+  flex-shrink:0;
+  margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .12s;
+}
+
+.task-ml.done-task .task-ml-cb{
+  background:var(--blue2);
+  border-color:var(--blue2);
+}
+
+.task-ml.done-task .task-ml-cb::after{
+  content:'✓';
+  color:#fff;
+  font-size:8px;
+  line-height:1;
+}
+
+.task-ml.done-task .task-ml-text{
+  text-decoration:line-through;
+  color:var(--muted);
+}
+
+.task-ml-text{
+  font-size:11px;
+  color:var(--text2);
+  line-height:1.5;
+}
+
+code.inline{
+  background:rgba(90,138,191,.15);
+  color:var(--blue3);
+  padding:1px 5px;
+  border-radius:4px;
+  font-size:10px;
+  font-family:monospace;
+}
+
+/* ══════════════════════════════════════
+   COMBINED / OVERVIEW
+══════════════════════════════════════ */
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.mini-card{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+}
+
+.mini-card-title{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--gold);
+  margin-bottom:14px;
+  font-weight:500;
+}
+
+.habit-mini-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 0;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+
+.habit-mini-row:last-child{border-bottom:none}
+
+.habit-mini-name{
+  display:flex;align-items:center;gap:7px;
+  color:var(--text2);
+}
+
+.habit-mini-bar{
+  flex:1;
+  height:3px;
+  background:var(--border2);
+  border-radius:2px;
+  margin:0 12px;
+  overflow:hidden;
+}
+
+.habit-mini-fill{
+  height:100%;
+  border-radius:2px;
+  background:linear-gradient(90deg,var(--green),var(--green3));
+  transition:width .4s;
+}
+
+.habit-mini-pct{
+  font-size:11px;
+  color:var(--green3);
+  font-weight:500;
+  min-width:32px;
+  text-align:right;
+}
+
+/* ══════════════════════════════════════
+   TODAY CARD
+══════════════════════════════════════ */
+.today-card{
+  background:linear-gradient(135deg,rgba(200,164,90,.05),rgba(58,95,138,.05));
+  border:1px solid var(--border2);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:24px;
+}
+
+.today-label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+
+.today-title{
+  font-family:'Amiri',serif;
+  font-size:22px;
+  color:var(--text);
+  margin-bottom:16px;
+}
+
+.today-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.today-col-title{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* responsive */
+@media(max-width:700px){
+  .hero h1{font-size:34px}
+  .two-col{grid-template-columns:1fr}
+  .today-cols{grid-template-columns:1fr}
+  .days-list{grid-template-columns:1fr}
+  .col-name{width:130px;min-width:110px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-arabic">رمضان كريم · علم ونمو</div>
+  <h1>Рамадан + AI/ML</h1>
+  <div class="hero-sub">30 дней · привычки · обучение · рост</div>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('overview')">📊 Обзор</button>
+  <button class="tab-btn" onclick="showTab('habits')">🌙 Привычки</button>
+  <button class="tab-btn" onclick="showTab('aiml')">🧠 AI / ML</button>
+</div>
+
+<!-- ════════ OVERVIEW ════════ -->
+<div class="section active" id="tab-overview">
+
+  <div class="stats-row" id="ov-stats">
+    <div class="stat-card" style="--accent:var(--gold2)">
+      <div class="stat-num" id="ov-day">1</div>
+      <div class="stat-lbl">День Рамадана</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--green3)">
+      <div class="stat-num" id="ov-habits">0%</div>
+      <div class="stat-lbl">Привычки сегодня</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--blue3)">
+      <div class="stat-num" id="ov-ml">0%</div>
+      <div class="stat-lbl">AI/ML прогресс</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--gold)">
+      <div class="stat-num" id="ov-streak">0🔥</div>
+      <div class="stat-lbl">Серия дней</div>
+    </div>
+  </div>
+
+  <!-- Today card -->
+  <div class="today-card">
+    <div class="today-label">Сегодня — День <span id="td-daynum">1</span></div>
+    <div class="today-title" id="td-mltopic">Загрузка...</div>
+    <div class="today-cols">
+      <div>
+        <div class="today-col-title">🌙 Привычки</div>
+        <div id="td-habits-list"></div>
+      </div>
+      <div>
+        <div class="today-col-title">🧠 AI/ML задачи</div>
+        <div id="td-ml-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress bars -->
+  <div class="progress-wrap">
+    <div class="prog-label">Общий прогресс Рамадана <span id="ov-total-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="ov-prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Habit mini summary -->
+  <div class="two-col">
+    <div class="mini-card">
+      <div class="mini-card-title">🌙 Привычки — статистика</div>
+      <div id="habit-mini-list"></div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-title">🧠 AI/ML — недели</div>
+      <div id="mlweek-mini-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════ HABITS ════════ -->
+<div class="section" id="tab-habits">
+
+  <div class="stats-row">
+    <div class="stat-card" style="--accent:var(--green3)">
+      <div class="stat-num" id="h-today">0/0</div>
+      <div class="stat-lbl">Сегодня</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--gold2)">
+      <div class="stat-num" id="h-total">0</div>
+      <div class="stat-lbl">Всего выполнено</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--gold)">
+      <div class="stat-num" id="h-streak">0</div>
+      <div class="stat-lbl">Лучшая серия 🔥</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--green2)">
+      <div class="stat-num" id="h-pct">0%</div>
+      <div class="stat-lbl">Общий %</div>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <div class="sec-line"></div>
+    <h2>30 дней трекер</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="habit-grid-wrap">
+    <table class="habit-table" id="habit-table">
+      <colgroup id="hcg"></colgroup>
+      <thead id="habit-thead"></thead>
+      <tbody id="habit-tbody"></tbody>
+      <tfoot id="habit-tfoot"></tfoot>
+    </table>
+  </div>
+
+</div>
+
+<!-- ════════ AI/ML ════════ -->
+<div class="section" id="tab-aiml">
+
+  <div class="stats-row">
+    <div class="stat-card" style="--accent:var(--blue3)">
+      <div class="stat-num" id="ml-done">0</div>
+      <div class="stat-lbl">Дней завершено</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--blue2)">
+      <div class="stat-num" id="ml-tasks">0</div>
+      <div class="stat-lbl">Задач выполнено</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--blue3)">
+      <div class="stat-num" id="ml-pct">0%</div>
+      <div class="stat-lbl">Прогресс</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--gold)">
+      <div class="stat-num" id="ml-week">1</div>
+      <div class="stat-lbl">Текущая неделя</div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="prog-label">Прогресс обучения AI/ML <span id="ml-prog-pct">0%</span></div>
+    <div class="prog-bar">
+      <div class="prog-fill" id="ml-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--blue) 0%,var(--blue3) 100%)"></div>
+    </div>
+  </div>
+
+  <div id="ml-weeks-container"></div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════
+
+const RAMADAN_DAY = 1; // ← СМЕНИ НА ТЕКУЩИЙ ДЕНЬ
+const TODAY_IDX = RAMADAN_DAY - 1;
+
+const HABITS = [
+  { name: 'Изучение Корана', emoji: '📖', color: '#c8a45a', doneBg: 'rgba(200,164,90,.15)' },
+  { name: 'Намаз (все 5)', emoji: '🕌', color: '#a07840', doneBg: 'rgba(160,120,64,.15)' },
+  { name: 'Таравих намаз', emoji: '🌙', color: '#9e844a', doneBg: 'rgba(158,132,74,.15)' },
+  { name: 'Спорт', emoji: '🏃', color: '#3d7a4e', doneBg: 'rgba(61,122,78,.15)' },
+  { name: 'Кодинг / ИИ', emoji: '💻', color: '#3a5f8a', doneBg: 'rgba(58,95,138,.15)' },
+  { name: 'Без сахара', emoji: '🚫', color: '#8a3a3a', doneBg: 'rgba(138,58,58,.15)' },
+  { name: 'Без доп. дофамина', emoji: '📵', color: '#6b4a8b', doneBg: 'rgba(107,74,139,.15)' },
+  { name: 'Работа СТВ', emoji: '🎬', color: '#7c4a68', doneBg: 'rgba(124,74,104,.15)' },
+  { name: 'Чтение Substack', emoji: '📰', color: '#4a7c6b', doneBg: 'rgba(74,124,107,.15)' },
+];
+
+const ML_WEEKS = [
+  {
+    title: '📊 Неделя 1 — Данные и мышление',
+    days: [
+      { topic: 'День 1 — Что такое ML', tasks: ['Установить Python 3.11', 'Установить VS Code / Jupyter', 'Понять pipeline: data → model → loss', 'Загрузить CSV и посмотреть <code>head()</code>'] },
+      { topic: 'День 2 — Pandas / NumPy', tasks: ['Pandas: select, filter, groupby', 'NumPy: mean, std', 'Написать простой data loader'] },
+      { topic: 'День 3 — Визуализация', tasks: ['Matplotlib', 'Построить 3 графика', 'Понять, что говорят данные'] },
+      { topic: 'День 4 — Loss функции', tasks: ['MSE, MAE', 'Почему логарифмы важны', 'Посчитать loss вручную'] },
+      { topic: 'День 5 — Градиент', tasks: ['Что такое gradient descent', 'Реализовать его с нуля'] },
+      { topic: 'День 6 — Overfitting', tasks: ['Train / val / test', 'Специально переобучить модель'] },
+      { topic: 'День 7 — Рефлексия', tasks: ['Что понял', 'Где было сложно', 'Что повторить'] },
+    ]
+  },
+  {
+    title: '🤖 Неделя 2 — Классический ML',
+    days: [
+      { topic: 'День 8 — Linear Regression', tasks: ['Обучить модель', 'Посчитать MSE'] },
+      { topic: 'День 9 — Logistic Regression', tasks: ['Classification', 'Accuracy vs качество'] },
+      { topic: 'День 10 — Decision Trees', tasks: ['Обучить дерево', 'Переобучить его'] },
+      { topic: 'День 11 — Random Forest', tasks: ['Понять ансамбли', 'Сравнить с деревом'] },
+      { topic: 'День 12 — Метрики', tasks: ['Precision', 'Recall', 'F1', 'ROC-AUC'] },
+      { topic: 'День 13 — Feature Engineering', tasks: ['Улучшить данные', 'Улучшить метрику без смены модели'] },
+      { topic: 'День 14 — Мини-проект', tasks: ['Классификатор', 'Короткий вывод (5 строк)'] },
+    ]
+  },
+  {
+    title: '🔥 Неделя 3 — Deep Learning (PyTorch)',
+    days: [
+      { topic: 'День 15 — PyTorch базово', tasks: ['Установить PyTorch', 'Tensor vs numpy'] },
+      { topic: 'День 16 — Модель', tasks: ['<code>nn.Module</code>', '<code>forward()</code>'] },
+      { topic: 'День 17 — Обучение', tasks: ['Loss', 'Optimizer', 'Backprop'] },
+      { topic: 'День 18 — Training Loop', tasks: ['Написать loop руками', 'Логировать loss'] },
+      { topic: 'День 19 — Regularization', tasks: ['Dropout', 'Weight decay'] },
+      { topic: 'День 20 — Улучшение модели', tasks: ['Улучшить качество на +5–10%'] },
+      { topic: 'День 21 — Мини-проект DL', tasks: ['Обучить DL-модель', 'График обучения'] },
+    ]
+  },
+  {
+    title: '🧩 Неделя 4 — LLM и проф-мышление',
+    days: [
+      { topic: 'День 22 — Как работают LLM', tasks: ['Tokens', 'Context', 'Temperature'] },
+      { topic: 'День 23 — Prompt Engineering', tasks: ['Разные prompts', 'Сравнить ответы'] },
+      { topic: 'День 24 — Embeddings', tasks: ['Vector search', 'Similarity'] },
+      { topic: 'День 25 — RAG', tasks: ['База + LLM', 'Мини-проект'] },
+      { topic: 'День 26 — Fine-tuning', tasks: ['Что такое LoRA', 'Почему full fine-tune — ошибка'] },
+      { topic: 'День 27 — Ошибки LLM', tasks: ['Hallucinations', 'Evaluation'] },
+      { topic: 'День 28 — MLOps мышление', tasks: ['Логи', 'Версии', 'Эксперименты'] },
+    ]
+  },
+  {
+    title: '🏆 Финал',
+    days: [
+      { topic: 'День 29 — Итоговый проект', tasks: ['Данные', 'Модель', 'Метрика', 'Выводы'] },
+      { topic: 'День 30 — Итог', tasks: ['Что умею', 'Где слаб', 'План на 90 дней'] },
+    ]
+  }
+];
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+let habitGrid = HABITS.map(() => Array(30).fill(0));
+let mlTasks = {}; // key: "wi_di_ti" -> bool
+
+try {
+  const sg = localStorage.getItem('rmdn_habits');
+  if (sg) habitGrid = JSON.parse(sg);
+  const sm = localStorage.getItem('rmdn_ml');
+  if (sm) mlTasks = JSON.parse(sm);
+} catch(e) {}
+
+function save() {
+  try {
+    localStorage.setItem('rmdn_habits', JSON.stringify(habitGrid));
+    localStorage.setItem('rmdn_ml', JSON.stringify(mlTasks));
+  } catch(e) {}
+}
+
+// ════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════
+function pctColor(p) {
+  if (p >= 80) return 'var(--green3)';
+  if (p >= 50) return 'var(--gold2)';
+  return 'var(--red)';
+}
+
+function getHabitStreak(hi) {
+  let s = 0;
+  for (let d = TODAY_IDX; d >= 0; d--) {
+    if (habitGrid[hi][d]) s++; else break;
+  }
+  return s;
+}
+
+function getBestStreak() {
+  let best = 0;
+  // streak = days where ALL habits done
+  let cur = 0;
+  for (let d = 0; d <= TODAY_IDX; d++) {
+    const allDone = HABITS.every((_, hi) => habitGrid[hi][d]);
+    if (allDone) { cur++; best = Math.max(best, cur); }
+    else cur = 0;
+  }
+  return best;
+}
+
+function getMlStats() {
+  let totalTasks = 0, doneTasks = 0, doneDays = 0;
+  ML_WEEKS.forEach((w, wi) => {
+    w.days.forEach((day, di) => {
+      const dayTotal = day.tasks.length;
+      let dayDone = 0;
+      day.tasks.forEach((_, ti) => {
+        totalTasks++;
+        if (mlTasks[`${wi}_${di}_${ti}`]) { doneTasks++; dayDone++; }
+      });
+      if (dayDone === dayTotal) doneDays++;
+    });
+  });
+  return { totalTasks, doneTasks, doneDays };
+}
+
+// ════════════════════════════════════════════
+// RENDER HABIT TABLE
+// ════════════════════════════════════════════
+function renderHabitTable() {
+  const thead = document.getElementById('habit-thead');
+  const tbody = document.getElementById('habit-tbody');
+  const tfoot = document.getElementById('habit-tfoot');
+  const cg = document.getElementById('hcg');
+
+  // colgroup
+  cg.innerHTML = `<col class="col-n"/><col class="col-name"/>` +
+    Array(30).fill('<col class="col-d"/>').join('') +
+    `<col class="col-tot"/><col class="col-pct"/>`;
+
+  // Week header row
+  let wRow = '<tr>';
+  wRow += `<th class="th-week" colspan="2">Привычки</th>`;
+  const weekSpans = [7,7,7,7,2]; // weeks 1-4 = 7 days, week 5 = 2 days
+  weekSpans.forEach((s, wi) => {
+    wRow += `<th class="th-week" colspan="${s}">Нед ${wi+1}</th>`;
+  });
+  wRow += `<th class="th-week" colspan="2">Итог</th></tr>`;
+
+  // Day number row
+  let dRow = '<tr>';
+  dRow += `<th class="th-daynum" style="color:var(--muted);font-size:9px">№</th>`;
+  dRow += `<th class="th-daynum" style="text-align:left;padding-left:8px">Привычка</th>`;
+  for (let d = 0; d < 30; d++) {
+    const isFriday = (d % 7 === 4); // 5th day of each week
+    const isToday = (d === TODAY_IDX);
+    let cls = 'th-daynum';
+    if (isFriday) cls += ' is-friday';
+    if (isToday) cls += ' is-today';
+    dRow += `<th class="${cls}">${d+1}</th>`;
+  }
+  dRow += `<th class="th-daynum">Дней</th><th class="th-daynum">%</th></tr>`;
+
+  thead.innerHTML = wRow + dRow;
+
+  // Body
+  let html = '';
+  HABITS.forEach((h, hi) => {
+    const rowDone = habitGrid[hi].slice(0, TODAY_IDX + 1).reduce((a,b)=>a+b,0);
+    const avail = TODAY_IDX + 1;
+    const pct = avail > 0 ? Math.round(rowDone / avail * 100) : 0;
+
+    html += `<tr>`;
+    html += `<td class="td-n" style="height:32px;vertical-align:middle">${hi+1}</td>`;
+    html += `<td class="td-name"><span class="em">${h.emoji}</span>${h.name}</td>`;
+
+    for (let d = 0; d < 30; d++) {
+      const isFuture = d > TODAY_IDX;
+      const isDone = habitGrid[hi][d] === 1;
+      const isToday = d === TODAY_IDX;
+      let cls = 'td-check';
+      if (isDone) cls += ' done';
+      if (isFuture) cls += ' future';
+      if (isToday) cls += ' is-today';
+      const style = isDone ? `--row-color:${h.color};--row-done:${h.doneBg}` : '';
+      const click = isFuture ? '' : `onclick="toggleHabit(${hi},${d})"`;
+      html += `<td class="${cls}" style="${style}" ${click}><div class="ck"></div></td>`;
+    }
+
+    html += `<td class="td-tot" style="vertical-align:middle">${rowDone}</td>`;
+    html += `<td class="td-pct" style="color:${pctColor(pct)};vertical-align:middle">${pct}%</td>`;
+    html += `</tr>`;
+  });
+
+  tbody.innerHTML = html;
+
+  // Footer
+  const doneByDay = Array(30).fill(0);
+  HABITS.forEach((_, hi) => {
+    for (let d = 0; d <= TODAY_IDX; d++) {
+      if (habitGrid[hi][d]) doneByDay[d]++;
+    }
+  });
+
+  let fHTML = '';
+  [
+    ['Сделано', d => d <= TODAY_IDX ? doneByDay[d] : ''],
+    ['% дня',  d => d <= TODAY_IDX ? Math.round(doneByDay[d]/HABITS.length*100)+'%' : ''],
+  ].forEach(([lbl, fn]) => {
+    fHTML += `<tr class="tr-foot">`;
+    fHTML += `<td></td><td class="foot-lbl">${lbl}</td>`;
+    for (let d = 0; d < 30; d++) {
+      const v = fn(d);
+      let col = '';
+      if (typeof v === 'string' && v.includes('%')) {
+        const n = parseInt(v);
+        col = `style="color:${pctColor(n)}"`;
+      }
+      fHTML += `<td ${col} style="font-size:10px">${v}</td>`;
+    }
+    fHTML += `<td></td><td></td></tr>`;
+  });
+
+  tfoot.innerHTML = fHTML;
+
+  updateHabitStats();
+}
+
+function updateHabitStats() {
+  const todayDone = HABITS.filter((_, hi) => habitGrid[hi][TODAY_IDX] === 1).length;
+  document.getElementById('h-today').textContent = `${todayDone}/${HABITS.length}`;
+
+  const total = habitGrid.reduce((s,row)=>s+row.reduce((a,b)=>a+b,0),0);
+  document.getElementById('h-total').textContent = total;
+
+  const best = getBestStreak();
+  document.getElementById('h-streak').textContent = best;
+
+  const possible = HABITS.length * (TODAY_IDX + 1);
+  const pct = possible > 0 ? Math.round(total/possible*100) : 0;
+  document.getElementById('h-pct').textContent = pct + '%';
+}
+
+// ════════════════════════════════════════════
+// RENDER AI/ML
+// ════════════════════════════════════════════
+function renderML() {
+  const container = document.getElementById('ml-weeks-container');
+  let html = '';
+
+  ML_WEEKS.forEach((week, wi) => {
+    html += `<div class="week-block">`;
+    html += `<div class="week-title">${week.title}</div>`;
+    html += `<div class="days-list">`;
+
+    week.days.forEach((day, di) => {
+      const globalDay = wi * 7 + di; // 0-indexed
+      const isFuture = globalDay > TODAY_IDX;
+      const allDone = day.tasks.every((_, ti) => mlTasks[`${wi}_${di}_${ti}`]);
+
+      html += `<div class="day-card${allDone?' done-card':''}">`;
+      html += `<div class="day-title-row">`;
+      html += `<div class="day-num">ДЕНЬ ${globalDay + 1}${isFuture?' · скоро':''}</div>`;
+      if (allDone) html += `<div class="day-done-badge">✓ готово</div>`;
+      html += `</div>`;
+      html += `<div class="day-topic">${day.topic.replace('День ' + (globalDay+1) + ' — ', '')}</div>`;
+      html += `<ul class="task-list-ml">`;
+
+      day.tasks.forEach((task, ti) => {
+        const key = `${wi}_${di}_${ti}`;
+        const done = mlTasks[key];
+        const disabled = isFuture ? 'style="pointer-events:none;opacity:.4"' : '';
+        html += `<li class="task-ml${done?' done-task':''}" onclick="toggleML('${key}')" ${disabled}>`;
+        html += `<div class="task-ml-cb"></div>`;
+        html += `<div class="task-ml-text">${task}</div>`;
+        html += `</li>`;
+      });
+
+      html += `</ul></div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+  updateMLStats();
+}
+
+function updateMLStats() {
+  const { totalTasks, doneTasks, doneDays } = getMlStats();
+  const pct = totalTasks > 0 ? Math.round(doneTasks/totalTasks*100) : 0;
+  const currentWeek = Math.floor(TODAY_IDX / 7) + 1;
+
+  document.getElementById('ml-done').textContent = doneDays;
+  document.getElementById('ml-tasks').textContent = doneTasks;
+  document.getElementById('ml-pct').textContent = pct + '%';
+  document.getElementById('ml-week').textContent = Math.min(currentWeek, 4);
+  document.getElementById('ml-prog-pct').textContent = pct + '%';
+  document.getElementById('ml-prog-fill').style.width = pct + '%';
+}
+
+// ════════════════════════════════════════════
+// RENDER OVERVIEW
+// ════════════════════════════════════════════
+function renderOverview() {
+  document.getElementById('ov-day').textContent = RAMADAN_DAY;
+
+  const todayHabitDone = HABITS.filter((_, hi) => habitGrid[hi][TODAY_IDX]).length;
+  const habitPct = Math.round(todayHabitDone / HABITS.length * 100);
+  document.getElementById('ov-habits').textContent = habitPct + '%';
+
+  const { totalTasks, doneTasks } = getMlStats();
+  const mlPct = totalTasks > 0 ? Math.round(doneTasks/totalTasks*100) : 0;
+  document.getElementById('ov-ml').textContent = mlPct + '%';
+
+  document.getElementById('ov-streak').textContent = getBestStreak() + '🔥';
+
+  // Total progress (habits + ml combined)
+  const habitTotal = habitGrid.reduce((s,row)=>s+row.reduce((a,b)=>a+b,0),0);
+  const habitPossible = HABITS.length * (TODAY_IDX + 1);
+  const habitPctTotal = habitPossible > 0 ? Math.round(habitTotal/habitPossible*100) : 0;
+  const combined = Math.round((habitPctTotal + mlPct) / 2);
+  document.getElementById('ov-total-pct').textContent = combined + '%';
+  document.getElementById('ov-prog-fill').style.width = combined + '%';
+
+  // Today card
+  document.getElementById('td-daynum').textContent = RAMADAN_DAY;
+  // find today's ML day
+  const todayML = ML_WEEKS.flatMap(w=>w.days)[TODAY_IDX];
+  if (todayML) document.getElementById('td-mltopic').textContent = todayML.topic;
+
+  // Today habits quick list
+  const habitsList = document.getElementById('td-habits-list');
+  habitsList.innerHTML = HABITS.map((h, hi) => {
+    const done = habitGrid[hi][TODAY_IDX];
+    return `<div class="task-ml${done?' done-task':''}" onclick="toggleHabit(${hi},${TODAY_IDX});renderOverview()" style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer">
+      <div class="task-ml-cb${done?' done-task':''}"></div>
+      <div class="task-ml-text">${h.emoji} ${h.name}</div>
+    </div>`;
+  }).join('');
+
+  // Today ML tasks
+  const mlList = document.getElementById('td-ml-list');
+  if (todayML) {
+    const wi = Math.floor(TODAY_IDX / 7);
+    const di = TODAY_IDX % 7;
+    mlList.innerHTML = todayML.tasks.map((t, ti) => {
+      const key = `${wi}_${di}_${ti}`;
+      const done = mlTasks[key];
+      return `<div class="task-ml${done?' done-task':''}" onclick="toggleML('${key}');renderOverview()" style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer">
+        <div class="task-ml-cb"></div>
+        <div class="task-ml-text">${t}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Habit mini list
+  const hMini = document.getElementById('habit-mini-list');
+  hMini.innerHTML = HABITS.map((h, hi) => {
+    const done = habitGrid[hi].slice(0, TODAY_IDX+1).reduce((a,b)=>a+b,0);
+    const avail = TODAY_IDX + 1;
+    const p = avail > 0 ? Math.round(done/avail*100) : 0;
+    return `<div class="habit-mini-row">
+      <div class="habit-mini-name">${h.emoji} ${h.name}</div>
+      <div class="habit-mini-bar"><div class="habit-mini-fill" style="width:${p}%;background:${h.color}"></div></div>
+      <div class="habit-mini-pct" style="color:${pctColor(p)}">${p}%</div>
+    </div>`;
+  }).join('');
+
+  // ML week mini
+  const mlMini = document.getElementById('mlweek-mini-list');
+  mlMini.innerHTML = ML_WEEKS.map((w, wi) => {
+    let wTotal = 0, wDone = 0;
+    w.days.forEach((d, di) => {
+      d.tasks.forEach((_, ti) => {
+        wTotal++;
+        if (mlTasks[`${wi}_${di}_${ti}`]) wDone++;
+      });
+    });
+    const p = wTotal > 0 ? Math.round(wDone/wTotal*100) : 0;
+    const shortTitle = w.title.replace(/^.*?—\s*/, '');
+    return `<div class="habit-mini-row">
+      <div class="habit-mini-name" style="font-size:11px">${shortTitle.substring(0,22)}</div>
+      <div class="habit-mini-bar"><div class="habit-mini-fill" style="width:${p}%;background:var(--blue2)"></div></div>
+      <div class="habit-mini-pct" style="color:var(--blue3)">${p}%</div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+// ACTIONS
+// ════════════════════════════════════════════
+function toggleHabit(hi, d) {
+  if (d > TODAY_IDX) return;
+  habitGrid[hi][d] = habitGrid[hi][d] ? 0 : 1;
+  save();
+  renderHabitTable();
+  renderOverview();
+}
+
+function toggleML(key) {
+  mlTasks[key] = !mlTasks[key];
+  save();
+  renderML();
+  renderOverview();
+}
+
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+renderHabitTable();
+renderML();
+renderOverview();
+</script>
+</body>
+</html>
